@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freedom Date Checker v1.3</title>
+    <title>Freedom Date Checker</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         input[type="text"] { padding: 10px; width: 200px; font-size: 16px; color: #888; }
@@ -53,13 +53,12 @@
             while (workingDaysCount < 20) {
                 if (isWorkingDay(startDate)) {
                     workingDaysCount++;
-                    if (workingDaysCount === 20) break; // Stop precisely at 20 working days
                 }
                 startDate.setDate(startDate.getDate() + 1);
             }
 
-            // Ensure the final date is truly the 20th working day
-            if (!isWorkingDay(startDate)) {
+            // Ensure the final date is the 20th working day before adjusting for holidays
+            while (!isWorkingDay(startDate)) {
                 startDate.setDate(startDate.getDate() + 1);
             }
 
@@ -80,11 +79,7 @@
 
     <a href="#" onclick="savePage()">Download Freedom Date Checker</a>
     <p>The app is an HTML file, which opens in Chrome.</p>
+    
+    <p><br><br>Last updated 01/06/25 15:25</p>
 </body>
 </html>
-
-    <p><br><br>last updated 01/06/25 15:11</p>
-</body>
-</html>
-
-
