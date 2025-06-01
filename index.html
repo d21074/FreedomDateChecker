@@ -29,7 +29,27 @@
         function isWorkingDay(date) {
             const dayOfWeek = date.getDay();
             const formattedDate = date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
-            return dayOfWeek !== 0 && dayOfWeek !== 6 && !bankHolidays.includes(formattedDate);
+            
+            // Find late May bank holiday (last Monday of May)
+            let year = date.getFullYear();
+            let lastMayDay = new Date(year, 4, 31);
+            while (lastMayDay.getDay() !== 1) { // Move back until it lands on a Monday
+                lastMayDay.setDate(lastMayDay.getDate() - 1);
+            }
+
+            let firstWorkDayAfterMayHoliday = new Date(lastMayDay);
+            do {
+                firstWorkDayAfterMayHoliday.setDate(firstWorkDayAfterMayHoliday.getDate() + 1);
+            } while (!isStandardWorkingDay(firstWorkDayAfterMayHoliday));
+
+            return dayOfWeek !== 0 && dayOfWeek !== 6 && 
+                   !bankHolidays.includes(formattedDate) && 
+                   formattedDate !== firstWorkDayAfterMayHoliday.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
+        }
+
+        function isStandardWorkingDay(date) {
+            const dayOfWeek = date.getDay();
+            return dayOfWeek !== 0 && dayOfWeek !== 6;
         }
 
         function calculateFreedomDate() {
@@ -41,28 +61,18 @@
             }
 
             let startDate = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
+            let workingDays = []; 
 
-            // Move to the first valid working day AFTER the input date
-            while (!isWorkingDay(startDate)) {
+            while (workingDays.length < 20) {
                 startDate.setDate(startDate.getDate() + 1);
-            }
-
-            let workingDaysCount = 0;
-
-            // Count exactly 20 working days
-            while (workingDaysCount < 20) {
                 if (isWorkingDay(startDate)) {
-                    workingDaysCount++;
+                    workingDays.push(new Date(startDate)); 
                 }
-                startDate.setDate(startDate.getDate() + 1);
             }
 
-            // Ensure the final date is the 20th working day before adjusting for holidays
-            while (!isWorkingDay(startDate)) {
-                startDate.setDate(startDate.getDate() + 1);
-            }
+            let finalDate = workingDays[19]; 
 
-            document.getElementById("result").textContent = `Freedom date: ${startDate.toLocaleDateString("en-GB")}`;
+            document.getElementById("result").textContent = `Freedom date: ${finalDate.toLocaleDateString("en-GB")}`;
         }
 
         function savePage() {
@@ -80,6 +90,6 @@
     <a href="#" onclick="savePage()">Download Freedom Date Checker</a>
     <p>The app is an HTML file, which opens in Chrome.</p>
     
-    <p><br><br>Last updated 01/06/25 15:25</p>
+    <p><br><br>Last updated 01/06/25 15:35</p>
 </body>
 </html>
