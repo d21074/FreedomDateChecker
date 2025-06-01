@@ -28,7 +28,7 @@
 
         function isWorkingDay(date) {
             const dayOfWeek = date.getDay();
-            const formattedDate = date.toLocaleDateString("en-GB").slice(0, 8);
+            const formattedDate = date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
             return dayOfWeek !== 0 && dayOfWeek !== 6 && !bankHolidays.includes(formattedDate);
         }
 
@@ -42,12 +42,14 @@
 
             let startDate = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
 
+            // If the start date is not a working day, find the next working day
             while (!isWorkingDay(startDate)) {
                 startDate.setDate(startDate.getDate() + 1);
             }
 
             let workingDaysCount = 0;
 
+            // Count 20 working days from the confirmed start date
             while (workingDaysCount < 20) {
                 startDate.setDate(startDate.getDate() + 1);
                 if (isWorkingDay(startDate)) {
