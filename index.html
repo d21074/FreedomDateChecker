@@ -51,6 +51,7 @@
             while (workingDaysCount < 20) {
                 if (isWorkingDay(startDate)) {
                     workingDaysCount++;
+                    if (workingDaysCount === 20) break; // Ensures stopping at exactly 20 working days
                 }
                 startDate.setDate(startDate.getDate() + 1);
             }
@@ -74,3 +75,4 @@
     <p>The app is an HTML file, which opens in Chrome.</p>
 </body>
 </html>
+
