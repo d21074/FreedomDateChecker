@@ -1,108 +1,67 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Freedom Date Checker</title>
-
-    <style>
-
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-
-        input[type="text"] { padding: 10px; width: 200px; font-size: 16px; color: #888; }
-
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-
-        #result { margin-top: 20px; font-weight: bold; }
-
-    </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedom Date Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input[type="text"] { padding: 10px; width: 200px; font-size: 16px; color: #888; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; font-weight: bold; }
+        a { display: block; margin-top: 20px; font-size: 18px; color: blue; text-decoration: none; }
+    </style>
 </head>
-
 <body>
+    <h1>Freedom Date Checker</h1>
+    <p>Enter a date in the format <strong>dd/mm/yy</strong> to find the date 20 working days ahead.</p>
+    <input type="text" id="dateInput" placeholder="dd/mm/yy">
+    <button onclick="calculateFreedomDate()">Calculate</button>
+    <p id="result"></p>
 
-    <h1>Freedom Date Checker</h1>
+    <script>
+        const bankHolidays = [
+            "26/05/25", "27/05/25", "25/08/25", "25/12/25", "26/12/25",
+            "01/01/26", "03/04/26", "06/04/26", "04/05/26", "25/05/26", "26/05/26", "31/08/26", "25/12/26", "28/12/26",
+            "01/01/27", "26/03/27", "29/03/27", "03/05/27", "31/05/27", "01/06/27", "30/08/27", "27/12/27", "28/12/27"
+        ];
 
-    <p>Enter a date in the format <strong>dd/mm/yy</strong> to find the date 20 working days ahead.</p>
+        function isWorkingDay(date) {
+            const dayOfWeek = date.getDay();
+            const formattedDate = date.toLocaleDateString("en-GB").slice(0, 8);
+            return dayOfWeek !== 0 && dayOfWeek !== 6 && !bankHolidays.includes(formattedDate);
+        }
 
-    <input type="text" id="dateInput" placeholder="dd/mm/yy">
+        function calculateFreedomDate() {
+            const input = document.getElementById("dateInput").value;
+            const parts = input.split("/");
+            if (parts.length !== 3) {
+                document.getElementById("result").textContent = "Invalid format. Use dd/mm/yy.";
+                return;
+            }
 
-    <button onclick="calculateFreedomDate()">Calculate</button>
+            let startDate = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
+            let workingDaysCount = 0;
 
-    <p id="result"></p>
+            // Start counting from the next actual working day
+            do {
+                startDate.setDate(startDate.getDate() + 1);
+            } while (!isWorkingDay(startDate));
 
+            while (workingDaysCount < 20) {
+                startDate.setDate(startDate.getDate() + 1);
+                if (isWorkingDay(startDate)) {
+                    workingDaysCount++;
+                }
+            }
 
-    <script>
+            document.getElementById("result").textContent = `Freedom date: ${startDate.toLocaleDateString("en-GB")}`;
+        }
+    </script>
 
-        const bankHolidays = [
+    <p>This app can be used to calculate dates from 1 June 2025 to 31 December 2027, after which the non-working days will need updating in the app's code.</p>
 
-            "26/05/25", "27/05/25", "25/08/25", "25/12/25", "26/12/25",
-
-            "01/01/26", "03/04/26", "06/04/26", "04/05/26", "25/05/26", "26/05/26", "31/08/26", "25/12/26", "28/12/26",
-
-            "01/01/27", "26/03/27", "29/03/27", "03/05/27", "31/05/27", "01/06/27", "30/08/27", "27/12/27", "28/12/27"
-
-        ];
-
-
-        function isWorkingDay(date) {
-
-            const dayOfWeek = date.getDay();
-
-            const formattedDate = date.toLocaleDateString("en-GB").slice(0, 8);
-
-            return dayOfWeek !== 0 && dayOfWeek !== 6 && !bankHolidays.includes(formattedDate);
-
-        }
-
-
-        function calculateFreedomDate() {
-
-            const input = document.getElementById("dateInput").value;
-
-            const parts = input.split("/");
-
-            if (parts.length !== 3) {
-
-                document.getElementById("result").textContent = "Invalid format. Use dd/mm/yy.";
-
-                return;
-
-            }
-
-
-            let startDate = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
-
-            startDate.setDate(startDate.getDate() + 1); // Start counting from the next day
-
-            let workingDaysCount = 0;
-
-
-            while (workingDaysCount < 20) {
-
-                startDate.setDate(startDate.getDate() + 1);
-
-                if (isWorkingDay(startDate)) {
-
-                    workingDaysCount++;
-
-                }
-
-            }
-
-
-            document.getElementById("result").textContent = `Freedom date: ${startDate.toLocaleDateString("en-GB")}`;
-
-        }
-
-    </script>
-
+    <a href="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/FreedomDateChecker.html" download>Download Freedom Date Checker</a>
+    <p>The app is an HTML file, which opens in Chrome.</p>
 </body>
-
 </html>
-
