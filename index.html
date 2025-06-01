@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freedom Date Checker v1.2</title>
+    <title>Freedom Date Checker v1.3</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         input[type="text"] { padding: 10px; width: 200px; font-size: 16px; color: #888; }
@@ -53,13 +53,13 @@
             while (workingDaysCount < 20) {
                 if (isWorkingDay(startDate)) {
                     workingDaysCount++;
-                    if (workingDaysCount === 20) break; // **Stops precisely at 20 working days**
+                    if (workingDaysCount === 20) break; // Stop precisely at 20 working days
                 }
                 startDate.setDate(startDate.getDate() + 1);
             }
 
-            // If the final date lands on a weekend or bank holiday, move forward
-            while (!isWorkingDay(startDate)) {
+            // Ensure the final date is truly the 20th working day
+            if (!isWorkingDay(startDate)) {
                 startDate.setDate(startDate.getDate() + 1);
             }
 
@@ -69,7 +69,7 @@
         function savePage() {
             const link = document.createElement("a");
             link.href = window.location.href;
-            link.download = "FreedomDateChecker_v1.2.html";
+            link.download = "FreedomDateChecker_v1.3.html";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -78,7 +78,11 @@
 
     <p>This app can be used to calculate dates from 1 June 2025 to 31 December 2027, after which the non-working days will need updating in the source code.<br> In addition to standard non-working days, the first working day after the late May bank holiday is counted as a non-working day.</p>
 
-    <a href="#" onclick="savePage()">Download Freedom Date Checker</a>
+    <a href="#" onclick="savePage()">Download Freedom Date Checker v1.3</a>
+    <p>The app is an HTML file, which opens in Chrome.</p>
+</body>
+</html>
+
     <p>The app is an HTML file, which opens in Chrome.<br><br> v1.2</p>
 </body>
 </html>
