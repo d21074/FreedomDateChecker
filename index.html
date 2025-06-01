@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freedom Date Checker</title>
+    <title>Freedom Date Checker v1.1</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         input[type="text"] { padding: 10px; width: 200px; font-size: 16px; color: #888; }
@@ -42,10 +42,10 @@
 
             let startDate = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
 
-            // Move to the first working day AFTER the start date
-            do {
+            // Move to the first working day AFTER the input date
+            while (!isWorkingDay(startDate)) {
                 startDate.setDate(startDate.getDate() + 1);
-            } while (!isWorkingDay(startDate));
+            }
 
             let workingDaysCount = 0;
 
@@ -57,7 +57,7 @@
                 startDate.setDate(startDate.getDate() + 1);
             }
 
-            // Move forward if the final date lands on a weekend or bank holiday
+            // If the final date lands on a non-working day, move forward to the next valid working day
             while (!isWorkingDay(startDate)) {
                 startDate.setDate(startDate.getDate() + 1);
             }
@@ -68,7 +68,7 @@
         function savePage() {
             const link = document.createElement("a");
             link.href = window.location.href;
-            link.download = "FreedomDateChecker.html";
+            link.download = "FreedomDateChecker_v1.1.html";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -77,7 +77,11 @@
 
     <p>This app can be used to calculate dates from 1 June 2025 to 31 December 2027, after which the non-working days will need updating in the source code.<br> In addition to standard non-working days, the first working day after the late May bank holiday is counted as a non-working day.</p>
 
-    <a href="#" onclick="savePage()">Download Freedom Date Checker</a>
+    <a href="#" onclick="savePage()">Download Freedom Date Checker v1.1</a>
+    <p>The app is an HTML file, which opens in Chrome.</p>
+</body>
+</html>
+
     <p>The app is an HTML file, which opens in Chrome.<br><br>v1</p>
 </body>
 </html>
