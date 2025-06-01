@@ -46,12 +46,14 @@
                 startDate.setDate(startDate.getDate() + 1);
             }
 
+            startDate.setDate(startDate.getDate() + 1); // Move to next day before counting
+
             let workingDaysCount = 0;
 
             while (workingDaysCount < 20) {
                 if (isWorkingDay(startDate)) {
                     workingDaysCount++;
-                    if (workingDaysCount === 20) break; // Ensures stopping at exactly 20 working days
+                    if (workingDaysCount === 20) break;
                 }
                 startDate.setDate(startDate.getDate() + 1);
             }
@@ -69,10 +71,9 @@
         }
     </script>
 
-    <p>This app can be used to calculate dates from 1 June 2025 to 31 December 2027, after which the non-working days will need updating in the app's code.</p>
+    <p>This app can be used to calculate dates from 1 June 2025 to 31 December 2027, after which the non-working days will need updating in the app's code. The app treats the first working day after the late May bank holiday as a non-working day too.</p>
 
     <a href="#" onclick="savePage()">Download Freedom Date Checker</a>
     <p>The app is an HTML file, which opens in Chrome.</p>
 </body>
 </html>
-
